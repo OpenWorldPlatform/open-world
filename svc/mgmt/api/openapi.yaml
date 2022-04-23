@@ -1,0 +1,112 @@
+openapi: 3.0.0
+info:
+  description: OpenWorldPlatform mgmt
+  license:
+    name: Apache-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  title: OpenWorldPlatform mgmt service
+  version: 1.0.0
+servers:
+- url: /
+paths:
+  /:
+    get:
+      description: Index page
+      operationId: Index
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Index'
+          description: Index page
+  /user:
+    post:
+      description: Create a user
+      operationId: addUser
+      requestBody:
+        $ref: '#/components/requestBodies/User'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: User created
+        "405":
+          description: Invalid input
+  /project:
+    post:
+      description: Create aa project
+      operationId: addProject
+      requestBody:
+        $ref: '#/components/requestBodies/Project'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: Project created
+        "405":
+          description: Invalid input
+  /project/{id}:
+    get:
+      description: Return a project
+      operationId: getProjectById
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: Project found
+        "400":
+          description: Invalid Id
+        "404":
+          description: Project not found
+components:
+  requestBodies:
+    User:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/User'
+    Project:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Project'
+      description: Project object
+      required: true
+  schemas:
+    Index:
+      example:
+        version: version
+      properties:
+        version:
+          type: string
+    User:
+      example:
+        name: admin@game.dev
+      properties:
+        name:
+          type: string
+    Project:
+      example:
+        name: Game - Development
+        id: game-dev
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      title: Project object
