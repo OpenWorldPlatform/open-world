@@ -1,0 +1,29 @@
+name: GitHub Actions Demo
+on: [pull_request]
+jobs:
+  validate-generated-code:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Generate Client
+        uses: openapi-generators/openapitools-generator-action@v1
+        with:
+          generator: go
+          openapi-file: specs/mgmt.yaml
+          command-args: -o client/mgmt/go
+      - name: Generate Server
+        uses: openapi-generators/openapitools-generator-action@v1
+        with:
+          generator: go-server
+          openapi-file: specs/mgmt.yaml
+          command-args: -o svc/mgmt --additional-properties hideGenerationTimestamp=true
+      - name: Generate UI
+        uses: openapi-generators/openapitools-generator-action@v1
+        with:
+          generator: typescript-angular
+          openapi-file: specs/mgmt.yaml
+          command-args: -o ui/src/app/api/mgmt
+      - name: Validate
+        run: |
+          git status
