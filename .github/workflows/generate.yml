@@ -12,18 +12,21 @@ jobs:
           generator: go
           openapi-file: specs/mgmt.yaml
           command-args: -o client/mgmt/go
+          generator-tag: v5.4.0
       - name: Generate Server
         uses: openapi-generators/openapitools-generator-action@v1
         with:
           generator: go-server
           openapi-file: specs/mgmt.yaml
           command-args: -o svc/mgmt --additional-properties hideGenerationTimestamp=true
+          generator-tag: v5.4.0
       - name: Generate UI
         uses: openapi-generators/openapitools-generator-action@v1
         with:
           generator: typescript-angular
           openapi-file: specs/mgmt.yaml
           command-args: -o ui/src/app/api/mgmt
+          generator-tag: v5.4.0
       - name: Validate
         run: |
           git status
